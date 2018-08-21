@@ -1,5 +1,7 @@
 package com.romejanic.jmarch.math;
 
+import java.awt.Color;
+
 public class Vec3 {
 
 	public static final Vec3 ZERO = new Vec3(0f);
@@ -117,6 +119,13 @@ public class Vec3 {
 	
 	public static float dot(Vec3 a, Vec3 b) {
 		return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+	}
+	
+	public static Color toColor(Vec3 v) {
+		return new Color(
+				Mathf.clamp01(v.x),
+				Mathf.clamp01(v.y),
+				Mathf.clamp01(v.z));
 	}
 	
 }

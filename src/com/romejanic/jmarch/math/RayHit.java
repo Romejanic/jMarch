@@ -12,4 +12,8 @@ public class RayHit {
 		this.materialID = materialID;
 	}
 	
+	public Vec3 getHitPosition() {
+		return this.ray.getPoint(this.distance);
+	}
+	
 }

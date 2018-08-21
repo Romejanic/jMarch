@@ -80,7 +80,10 @@ public class Raymarcher {
 	public Color getRayColor(Ray ray, Scene scene) {
 		RayHit hit = marchRay(ray, scene);
 		if(hit.materialID != -1) {
-			return Color.red;
+			ISceneObject object = scene.getObject(hit.materialID);
+			if(object != null) {
+				return object.shadePixel(hit, scene);
+			}
 		}
 		return getClearColor();
 	}

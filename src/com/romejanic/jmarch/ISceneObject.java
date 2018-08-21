@@ -9,8 +9,6 @@ public interface ISceneObject {
 
 	float getDistance(Vec3 p);
 	
-	int getMaterialID();
-	
-	Color shadePixel(RayHit hit, Scene scene, int material);
+	Color shadePixel(RayHit hit, Scene scene);
 	
 }

@@ -2,6 +2,7 @@ package com.romejanic.jmarch;
 
 import java.util.ArrayList;
 
+import com.romejanic.jmarch.math.RayHit;
 import com.romejanic.jmarch.math.Vec3;
 
 public class Scene {
@@ -21,20 +22,41 @@ public class Scene {
 		}
 		return object;
 	}
+	
+	public ISceneObject getObject(int id) {
+		if(id < 0 || id >= objects.size()) {
+			throw new IllegalArgumentException("ID out of bounds!");
+		}
+		return objects.get(id);
+	}
 
 	public Distance getClosest(Vec3 p) {
 		if(objects.isEmpty()) {
 			return new Distance(0f, -1);
 		}
 		Distance d = new Distance(Float.MAX_VALUE, -1);
-		for(ISceneObject object : objects) {
+		for(int i = 0; i < objects.size(); i++) {
+			ISceneObject object = objects.get(i);
 			float dist = object.getDistance(p);
 			if(dist < d.dist) {
 				d.dist = dist;
-				d.id   = object.getMaterialID();
+				d.id   = i;
 			}
 		}
 		return d;
+	}
+	
+	public Vec3 calcSurfaceNormal(Vec3 p, RayHit hit) {
+		Vec3 n  = new Vec3();
+		float e = hit.distance * 0.01f;
+		n.x = getClosest(offset(p, e, 0f, 0f)).dist - getClosest(offset(p, -e, 0f, 0f)).dist;
+		n.y = getClosest(offset(p, 0f, e, 0f)).dist - getClosest(offset(p, 0f, -e, 0f)).dist;
+		n.z = getClosest(offset(p, 0f, 0f, e)).dist - getClosest(offset(p, 0f, 0f, -e)).dist;
+		return Vec3.normalize(n, n);
+	}
+	
+	private Vec3 offset(Vec3 v, float x, float y, float z) {
+		return Vec3.add(v, new Vec3(x, y, z));
 	}
 	
 	public class Distance {

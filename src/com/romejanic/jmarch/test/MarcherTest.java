@@ -39,13 +39,10 @@ public class MarcherTest {
 		}
 
 		@Override
-		public int getMaterialID() {
-			return 0;
-		}
-
-		@Override
-		public Color shadePixel(RayHit hit, Scene scene, int material) {
-			return null;
+		public Color shadePixel(RayHit hit, Scene scene) {
+			Vec3 p = hit.getHitPosition();
+			Vec3 n = scene.calcSurfaceNormal(p, hit);
+			return Vec3.toColor(n);
 		}
 		
 	}
