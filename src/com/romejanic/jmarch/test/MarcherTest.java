@@ -36,8 +36,8 @@ public class MarcherTest {
 		pl.color = Color.green;
 		
 		for(int i = 0; i < 50; i++) {
-			float x = Mathf.random(-10f, 10f);
-			float z = Mathf.random(-10f, 10f);
+			float x = Mathf.random(-50f, 50f);
+			float z = Mathf.random(-50f, 50f);
 			PointLight l = (PointLight)scene.addLight(new PointLight(new Vec3(x, 0f, z)));
 			l.range = Mathf.random(2f, 20f);
 			l.color = new Color(Mathf.random(), Mathf.random(), Mathf.random());

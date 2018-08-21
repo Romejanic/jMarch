@@ -19,7 +19,7 @@ public class Raymarcher {
 	public float minimumDistance  = 0.01f;
 	public float distanceBias     = 0.85f;
 	public int stepsPerRaymarch   = 512;
-	public int stepsPerShadow     = 32;
+	public int stepsPerShadow     = 128;
 
 	public Raymarcher(int width, int height) {
 		this.resize(width, height);

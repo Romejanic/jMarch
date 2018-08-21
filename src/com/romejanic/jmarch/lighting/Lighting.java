@@ -50,7 +50,7 @@ public class Lighting {
 			//Soft shadows by iq: https://www.shadertoy.com/view/Xds3zN
 			float res = 1f;
 			float   t = 0.05f;
-			for(int i = 0; i < raymarcher.stepsPerRaymarch; i++) {
+			for(int i = 0; i < raymarcher.stepsPerShadow; i++) {
 				float h = scene.getClosest(ray.getPoint(t)).dist;
 				res = Math.min(res, light.shadowHardness*h/t);
 				t += Mathf.clamp(h, 0.02f, 0.5f);
