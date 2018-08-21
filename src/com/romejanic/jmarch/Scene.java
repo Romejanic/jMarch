@@ -1,13 +1,16 @@
 package com.romejanic.jmarch;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import com.romejanic.jmarch.lighting.Light;
 import com.romejanic.jmarch.math.RayHit;
 import com.romejanic.jmarch.math.Vec3;
 
 public class Scene {
 	
 	private static final ArrayList<ISceneObject> objects = new ArrayList<ISceneObject>();
+	private static final ArrayList<Light> lights = new ArrayList<Light>();
 	
 	public ISceneObject addObject(ISceneObject object) {
 		if(!objects.contains(object)) {
@@ -29,7 +32,25 @@ public class Scene {
 		}
 		return objects.get(id);
 	}
+	
+	public Light addLight(Light light) {
+		if(!lights.contains(light)) {
+			lights.add(light);
+		}
+		return light;
+	}
+	
+	public Light removeLight(Light light) {
+		if(lights.contains(light)) {
+			lights.remove(light);
+		}
+		return light;
+	}
 
+	public Iterator<Light> getLightIterator() {
+		return lights.iterator();
+	}
+	
 	public Distance getClosest(Vec3 p) {
 		if(objects.isEmpty()) {
 			return new Distance(0f, -1);

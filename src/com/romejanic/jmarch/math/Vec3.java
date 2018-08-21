@@ -121,11 +121,26 @@ public class Vec3 {
 		return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 	}
 	
+	public static Vec3 reflect(Vec3 i, Vec3 n) {
+		return reflect(i, n, new Vec3());
+	}
+	
+	public static Vec3 reflect(Vec3 i, Vec3 n, Vec3 dest) {
+		return sub(i, mul(n, 2f * dot(n, i), dest), dest);
+	}
+	
 	public static Color toColor(Vec3 v) {
 		return new Color(
 				Mathf.clamp01(v.x),
 				Mathf.clamp01(v.y),
 				Mathf.clamp01(v.z));
+	}
+	
+	public static Vec3 fromColor(Color color) {
+		float r = (float)color.getRed()   / 255f;
+		float g = (float)color.getGreen() / 255f;
+		float b = (float)color.getBlue()  / 255f;
+		return new Vec3(r, g, b);
 	}
 	
 }

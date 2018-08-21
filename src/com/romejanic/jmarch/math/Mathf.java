@@ -18,4 +18,8 @@ public class Mathf {
 		return clamp(x, 0f, 1f);
 	}
 	
+	public static float pow(float x, float y) {
+		return (float)Math.pow((double)x, (double)y);
+	}
+	
 }

@@ -6,6 +6,8 @@ import java.io.File;
 import com.romejanic.jmarch.ISceneObject;
 import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
+import com.romejanic.jmarch.lighting.Lighting;
+import com.romejanic.jmarch.lighting.PointLight;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.RayHit;
 import com.romejanic.jmarch.math.Vec3;
@@ -26,6 +28,8 @@ public class MarcherTest {
 			
 			scene.addObject(new Sphere(new Vec3(x, y, 10f), r));
 		}
+		
+		scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
 		
 		SceneRenderer.renderScene(scene, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));
@@ -50,7 +54,10 @@ public class MarcherTest {
 		public Color shadePixel(RayHit hit, Scene scene) {
 			Vec3 p = hit.getHitPosition();
 			Vec3 n = scene.calcSurfaceNormal(p, hit);
-			return Vec3.toColor(n);
+			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
+			
+			Vec3 albedo = new Vec3(1f, 0.2f, 0.2f);
+			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene);
 		}
 		
 	}
