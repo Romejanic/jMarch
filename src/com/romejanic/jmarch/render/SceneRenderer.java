@@ -18,6 +18,7 @@ import com.romejanic.jmarch.math.Vec3;
 public class SceneRenderer {
 
 	public static Vec3 CAMERA_POS = new Vec3(0f, 0f, -3f);
+	public static float globalTime = 0f;
 
 	public static boolean flipX = false;
 	public static boolean flipY = true;
@@ -70,6 +71,25 @@ public class SceneRenderer {
 		Debug.println("\rFrame complete! (took " + (time/1000) + "s)");
 	}
 
+	public static void renderFileSequencePNG(Raymarcher raymarcher, Scene scene, File directory, String prefix, float duration, int framesPerSecond, Runnable onPrepareFrame) throws IOException {
+		if(!directory.exists() && !directory.mkdirs()) {
+			throw new IOException("Failed to create directory " + directory.getAbsolutePath());
+		}
+		float time  = 0f;
+		float delta = 1f / (float)framesPerSecond;
+		int nFrames = (int)(duration * (float)framesPerSecond);
+		
+		for(int n = 0; n < nFrames; n++) {
+			Debug.println("* Starting frame " + n + " of " + nFrames + "...");
+			SceneRenderer.globalTime = time;
+			
+			renderScene(scene, raymarcher);
+			savePNGToFile(raymarcher, new File(directory, prefix + "_" + n + ".png"));
+			
+			time += delta;
+		}
+	}
+	
 	public static void savePNGToFile(Raymarcher raymarcher, File file) throws IOException {
 		if((!file.exists() && !file.createNewFile()) || file.isDirectory()) {
 			throw new IllegalArgumentException("Given file cannot be a directory, or could not be created!");
