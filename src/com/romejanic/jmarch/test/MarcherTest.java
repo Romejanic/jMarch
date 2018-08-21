@@ -6,6 +6,7 @@ import java.io.File;
 import com.romejanic.jmarch.ISceneObject;
 import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
+import com.romejanic.jmarch.lighting.DirectionalLight;
 import com.romejanic.jmarch.lighting.Lighting;
 import com.romejanic.jmarch.lighting.PointLight;
 import com.romejanic.jmarch.math.Mathf;
@@ -30,7 +31,9 @@ public class MarcherTest {
 			scene.addObject(new Sphere(new Vec3(x, y, 10f), r));
 		}
 		
-		scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
+		scene.addLight(new DirectionalLight(new Vec3(45f, 30f, -45f)));
+		PointLight pl = (PointLight)scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
+		pl.color = Color.green;
 		
 		SceneRenderer.renderScene(scene, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));
