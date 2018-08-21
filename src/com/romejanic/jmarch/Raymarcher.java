@@ -43,6 +43,19 @@ public class Raymarcher {
 	public void setClearColor(Color color) {
 		this.clearColor = color;
 	}
+	
+	public void clearBuffer() {
+		int color = this.getClearColor().getRGB();
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				this.buffer.setRGB(x, y, color);
+			}
+		}
+	}
+	
+	public void setBufferColor(int x, int y, int rgb) {
+		this.buffer.setRGB(x, y, rgb);
+	}
 
 	public void resize(int width, int height) {
 		this.width  = width;
@@ -56,7 +69,7 @@ public class Raymarcher {
 		for(int i = 0; i < this.stepsPerRaymarch; i++) {
 			Distance d = scene.getClosest(ray.getPoint(t));
 			if(d.dist < this.minimumDistance || t > this.maximumDistance) {
-				id = d.id;
+				id = t < this.maximumDistance ? d.id : -1;
 				break;
 			}
 			t += d.dist * this.distanceBias;
