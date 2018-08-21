@@ -40,6 +40,14 @@ public class Mathf {
 		return (1f - x) * a + x * b;
 	}
 	
+	public static float fresnelInverse(Vec3 i, Vec3 n, float power) {
+		return clamp01(pow(Math.max(-Vec3.dot(i, n), 0f), power));
+	}
+	
+	public static float fresnel(Vec3 i, Vec3 n, float power) {
+		return 1f - fresnelInverse(i, n, power);
+	}
+	
 	public static Color addColors(Color a, Color b) {
 		int rr = Math.min(a.getRed() + b.getRed(), 255);
 		int gg = Math.min(a.getGreen() + b.getGreen(), 255);
@@ -52,6 +60,11 @@ public class Mathf {
 		float gg = mix((float)a.getGreen() / 255f, (float)b.getGreen() / 255f, x);
 		float bb = mix((float)a.getBlue() / 255f, (float)b.getBlue() / 255f, x);
 		return new Color(rr, gg, bb);
+	}
+	
+	public static Color greyscale(float c) {
+		c = clamp01(c);
+		return new Color(c, c, c);
 	}
 	
 }

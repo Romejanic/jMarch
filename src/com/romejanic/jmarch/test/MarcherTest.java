@@ -72,8 +72,8 @@ public class MarcherTest {
 			Vec3 albedo = new Vec3(1f, 0.2f, 0.2f);
 			Color light = Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
 			Color refl  = Lighting.calculateReflections(p, r, hit, scene, bounces);
-			
-			return Mathf.mixColors(light, refl, 0.5f);
+
+			return Mathf.mixColors(light, refl, 0.8f * Mathf.fresnel(hit.ray.direction, n, 1.25f));
 		}
 		
 	}
@@ -103,7 +103,7 @@ public class MarcherTest {
 			Color light = Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
 			Color refl  = Lighting.calculateReflections(p, r, hit, scene, bounces);
 			
-			return Mathf.mixColors(light, refl, 0.5f);
+			return Mathf.mixColors(light, refl, 0.8f * Mathf.fresnel(hit.ray.direction, n, 1.25f));
 		}
 		
 	}
