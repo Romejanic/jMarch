@@ -6,6 +6,7 @@ import java.io.File;
 import com.romejanic.jmarch.ISceneObject;
 import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
+import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.RayHit;
 import com.romejanic.jmarch.math.Vec3;
 import com.romejanic.jmarch.render.SceneRenderer;
@@ -17,7 +18,14 @@ public class MarcherTest {
 		raymarcher.setClearColor(new Color(0.4f, 0.6f, 0.9f, 1f));
 		
 		Scene scene = new Scene();
-		scene.addObject(new Sphere(new Vec3(0f, 0f, 0f), 1f));
+		for(int i = 0; i < 10; i++) {
+			float theta = ((float)i / 10f) * 2f * (float)Math.PI;
+			float x     = Mathf.cos(theta) * 4f;
+			float y     = Mathf.sin(theta) * 4f;
+			float r     = 0.1f + i * 0.1f;
+			
+			scene.addObject(new Sphere(new Vec3(x, y, 10f), r));
+		}
 		
 		SceneRenderer.renderScene(scene, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));

@@ -2,6 +2,14 @@ package com.romejanic.jmarch.math;
 
 public class Mathf {
 
+	public static float sin(float x) {
+		return (float)Math.sin((double)x);
+	}
+	
+	public static float cos(float x) {
+		return (float)Math.cos((double)x);
+	}
+	
 	public static float clamp(float x, float min, float max) {
 		return x < min ? min : x > max ? max : x;
 	}
