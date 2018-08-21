@@ -1,6 +1,8 @@
 package com.romejanic.jmarch;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import com.romejanic.jmarch.Scene.Distance;
@@ -11,6 +13,7 @@ public class Raymarcher {
 
 	private int width;
 	private int height;
+	private int aaFactor;
 	private BufferedImage buffer;
 	
 	private Color clearColor      = null;
@@ -23,19 +26,38 @@ public class Raymarcher {
 	public int maxBounces         = 24;
 
 	public Raymarcher(int width, int height) {
+		this(width, height, 1);
+	}
+	
+	public Raymarcher(int width, int height, int aa) {
+		this.aaFactor = aa;
 		this.resize(width, height);
 	}
 
 	public int getWidth() {
-		return this.width;
+		return this.width * this.aaFactor;
 	}
 
 	public int getHeight() {
-		return this.height;
+		return this.height * this.aaFactor;
 	}
 	
 	public BufferedImage getColorBuffer() {
 		return this.buffer;
+	}
+	
+	public BufferedImage resolveAA() {
+		if(this.aaFactor == 1) {
+			return this.getColorBuffer();
+		}
+		BufferedImage out = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D    g2d = out.createGraphics();
+		
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.drawImage(this.getColorBuffer(), 0, 0, this.width, this.height, 0, 0, getWidth(), getHeight(), null);
+		g2d.dispose();
+		
+		return out;
 	}
 	
 	public Color getClearColor() {
@@ -48,8 +70,8 @@ public class Raymarcher {
 	
 	public void clearBuffer() {
 		int color = this.getClearColor().getRGB();
-		for(int x = 0; x < this.width; x++) {
-			for(int y = 0; y < this.height; y++) {
+		for(int x = 0; x < this.getWidth(); x++) {
+			for(int y = 0; y < this.getHeight(); y++) {
 				this.buffer.setRGB(x, y, color);
 			}
 		}
@@ -62,7 +84,20 @@ public class Raymarcher {
 	public void resize(int width, int height) {
 		this.width  = width;
 		this.height = height;
-		this.buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		this.buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+	}
+	
+	public boolean hasAA() {
+		return this.getAA() != 1;
+	}
+	
+	public int getAA() {
+		return this.aaFactor;
+	}
+	
+	public void setAA(int aa) {
+		this.aaFactor = Math.max(aa, 1);
+		this.resize(this.width, this.height);
 	}
 	
 	public RayHit marchRay(Ray ray, Scene scene) {

@@ -17,7 +17,7 @@ import com.romejanic.jmarch.render.SceneRenderer;
 public class MarcherTest {
 
 	public static void main(String[] args) throws Exception {
-		Raymarcher raymarcher = new Raymarcher(640, 480);
+		Raymarcher raymarcher = new Raymarcher(640, 480, 4);
 		raymarcher.setClearColor(new Color(0.4f, 0.6f, 0.9f, 1f));
 		
 		Scene scene = new Scene();

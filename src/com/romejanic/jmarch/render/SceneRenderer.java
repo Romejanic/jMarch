@@ -48,7 +48,7 @@ public class SceneRenderer {
 	}
 	
 	public static void savePNGToStream(Raymarcher raymarcher, OutputStream stream) throws IOException {
-		ImageIO.write(raymarcher.getColorBuffer(), "PNG", stream);
+		ImageIO.write(raymarcher.resolveAA(), "PNG", stream);
 	}
 	
 }
