@@ -41,7 +41,6 @@ public class SequenceTest {
 		scene.addLight(new DirectionalLight(new Vec3(45f, 30f, -45f)));
 		scene.addLight(new PointLight(new Vec3(0f, 0f, 10f)));
 		
-		Debug.ENABLED = true;
 		Runnable updateLoop = new Runnable() {
 			@Override
 			public void run() {
@@ -56,8 +55,11 @@ public class SequenceTest {
 			}
 		};
 		
+		Debug.ENABLED = true;
 		if(FILE_SEQUENCE) {
 			SceneRenderer.renderFileSequencePNG(raymarcher, scene, new File("render/sequence"), "test", 1f, 24, updateLoop);
+		} else {
+			SceneRenderer.renderSequenceGif(raymarcher, scene, new File("render/sequence.gif"), true, 1f, 24, updateLoop);
 		}
 	}
 	

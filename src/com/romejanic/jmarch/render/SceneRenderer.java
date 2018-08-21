@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
@@ -14,6 +16,8 @@ import com.romejanic.jmarch.debug.Debug;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.Ray;
 import com.romejanic.jmarch.math.Vec3;
+
+import elliotkroo.gifwriter.GifSequencer;
 
 public class SceneRenderer {
 
@@ -91,6 +95,31 @@ public class SceneRenderer {
 			
 			time += delta;
 		}
+	}
+	
+	public static void renderSequenceGif(Raymarcher raymarcher, Scene scene, File output, boolean loop, float duration, int framesPerSecond, Runnable onPrepareFrame) throws IOException {
+		ImageOutputStream out = new FileImageOutputStream(output);
+		GifSequencer gif = new GifSequencer(out, raymarcher.getColorBuffer().getType(), (int)((1f/(float)framesPerSecond) * 1000f), loop);
+		
+		float time  = 0f;
+		float delta = 1f / (float)framesPerSecond;
+		int nFrames = (int)(duration * (float)framesPerSecond);
+		
+		for(int n = 0; n < nFrames; n++) {
+			Debug.println("* Starting frame " + n + " of " + nFrames + "...");
+			SceneRenderer.globalTime = time;
+			if(onPrepareFrame != null) {
+				onPrepareFrame.run();
+			}
+			
+			renderScene(scene, raymarcher);
+			gif.writeToSequence(raymarcher.resolveAA());
+			time += delta;
+		}
+		
+		gif.close();
+		out.flush();
+		out.close();
 	}
 	
 	public static void savePNGToFile(Raymarcher raymarcher, File file) throws IOException {
