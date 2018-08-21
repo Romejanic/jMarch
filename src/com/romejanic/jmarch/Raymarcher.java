@@ -18,7 +18,8 @@ public class Raymarcher {
 	public float maximumDistance  = 1000f;
 	public float minimumDistance  = 0.01f;
 	public float distanceBias     = 0.85f;
-	public float stepsPerRaymarch = 512;
+	public int stepsPerRaymarch   = 512;
+	public int stepsPerShadow     = 32;
 
 	public Raymarcher(int width, int height) {
 		this.resize(width, height);
@@ -64,17 +65,21 @@ public class Raymarcher {
 	}
 	
 	public RayHit marchRay(Ray ray, Scene scene) {
-		float t = 0f;
+		return marchRay(ray, scene, 0f, this.maximumDistance);
+	}
+	
+	public RayHit marchRay(Ray ray, Scene scene, float startDistance, float maxDistance) {
+		float t = startDistance;
 		int id  = -1;
 		for(int i = 0; i < this.stepsPerRaymarch; i++) {
 			Distance d = scene.getClosest(ray.getPoint(t));
-			if(d.dist < this.minimumDistance || t > this.maximumDistance) {
-				id = t < this.maximumDistance ? d.id : -1;
+			if(d.dist < this.minimumDistance || t > maxDistance) {
+				id = t < maxDistance ? d.id : -1;
 				break;
 			}
 			t += d.dist * this.distanceBias;
 		}
-		return new RayHit(ray, t, id);
+		return new RayHit(ray, this, t, id);
 	}
 	
 	public Color getRayColor(Ray ray, Scene scene) {

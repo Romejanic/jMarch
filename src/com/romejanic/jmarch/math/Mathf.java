@@ -22,4 +22,12 @@ public class Mathf {
 		return (float)Math.pow((double)x, (double)y);
 	}
 	
+	public static float random() {
+		return (float)Math.random();
+	}
+	
+	public static float random(float min, float max) {
+		return min + (max - min) * random();
+	}
+	
 }

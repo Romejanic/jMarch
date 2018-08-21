@@ -21,7 +21,7 @@ public class MarcherTest {
 		raymarcher.setClearColor(new Color(0.4f, 0.6f, 0.9f, 1f));
 		
 		Scene scene = new Scene();
-		scene.addObject(new Plane(Vec3.UP, 10f));
+		scene.addObject(new Plane(Vec3.UP, 5f));
 		for(int i = 0; i < 10; i++) {
 			float theta = ((float)i / 10f) * 2f * (float)Math.PI;
 			float x     = Mathf.cos(theta) * 4f;
@@ -34,6 +34,15 @@ public class MarcherTest {
 		scene.addLight(new DirectionalLight(new Vec3(45f, 30f, -45f)));
 		PointLight pl = (PointLight)scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
 		pl.color = Color.green;
+		
+		for(int i = 0; i < 50; i++) {
+			float x = Mathf.random(-10f, 10f);
+			float z = Mathf.random(-10f, 10f);
+			PointLight l = (PointLight)scene.addLight(new PointLight(new Vec3(x, 0f, z)));
+			l.range = Mathf.random(2f, 20f);
+			l.color = new Color(Mathf.random(), Mathf.random(), Mathf.random());
+			l.intensity = Mathf.random(0.2f, 3f);
+		}
 		
 		SceneRenderer.renderScene(scene, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));
@@ -61,7 +70,7 @@ public class MarcherTest {
 			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
 			
 			Vec3 albedo = new Vec3(1f, 0.2f, 0.2f);
-			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene);
+			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
 		}
 		
 	}
@@ -88,7 +97,7 @@ public class MarcherTest {
 			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
 			
 			Vec3 albedo = new Vec3(0.2f, 1f, 0.2f);
-			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene);
+			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
 		}
 		
 	}

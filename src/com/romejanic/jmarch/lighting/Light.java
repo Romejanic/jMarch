@@ -10,6 +10,9 @@ public abstract class Light {
 	public Color color     = Color.white;
 	public float intensity = 1f;
 	
+	public ShadowType shadowType = ShadowType.SOFT;
+	public float shadowHardness  = 20f;
+	
 	public Light(Vec3 position) {
 		this.position = position;
 	}
