@@ -35,14 +35,14 @@ public class MarcherTest {
 		PointLight pl = (PointLight)scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
 		pl.color = Color.green;
 		
-		for(int i = 0; i < 50; i++) {
-			float x = Mathf.random(-50f, 50f);
-			float z = Mathf.random(-50f, 50f);
-			PointLight l = (PointLight)scene.addLight(new PointLight(new Vec3(x, 0f, z)));
-			l.range = Mathf.random(2f, 20f);
-			l.color = new Color(Mathf.random(), Mathf.random(), Mathf.random());
-			l.intensity = Mathf.random(0.2f, 3f);
-		}
+//		for(int i = 0; i < 50; i++) {
+//			float x = Mathf.random(-50f, 50f);
+//			float z = Mathf.random(-50f, 50f);
+//			PointLight l = (PointLight)scene.addLight(new PointLight(new Vec3(x, 0f, z)));
+//			l.range = Mathf.random(2f, 20f);
+//			l.color = new Color(Mathf.random(), Mathf.random(), Mathf.random());
+//			l.intensity = Mathf.random(0.2f, 3f);
+//		}
 		
 		SceneRenderer.renderScene(scene, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));
@@ -64,13 +64,16 @@ public class MarcherTest {
 		}
 
 		@Override
-		public Color shadePixel(RayHit hit, Scene scene) {
+		public Color shadePixel(RayHit hit, Scene scene, int bounces) {
 			Vec3 p = hit.getHitPosition();
 			Vec3 n = scene.calcSurfaceNormal(p, hit);
 			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
 			
 			Vec3 albedo = new Vec3(1f, 0.2f, 0.2f);
-			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
+			Color light = Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
+			Color refl  = Lighting.calculateReflections(p, r, hit, scene, bounces);
+			
+			return Mathf.mixColors(light, refl, 0.5f);
 		}
 		
 	}
@@ -91,13 +94,16 @@ public class MarcherTest {
 		}
 
 		@Override
-		public Color shadePixel(RayHit hit, Scene scene) {
+		public Color shadePixel(RayHit hit, Scene scene, int bounces) {
 			Vec3 p = hit.getHitPosition();
 			Vec3 n = scene.calcSurfaceNormal(p, hit);
 			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
 			
 			Vec3 albedo = new Vec3(0.2f, 1f, 0.2f);
-			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
+			Color light = Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene, hit.raymarcher);
+			Color refl  = Lighting.calculateReflections(p, r, hit, scene, bounces);
+			
+			return Mathf.mixColors(light, refl, 0.5f);
 		}
 		
 	}

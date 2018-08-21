@@ -7,6 +7,7 @@ import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.Ray;
+import com.romejanic.jmarch.math.RayHit;
 import com.romejanic.jmarch.math.Vec3;
 
 public class Lighting {
@@ -38,7 +39,7 @@ public class Lighting {
 		}
 		
 		Color lights = Vec3.toColor(Vec3.add(Vec3.mul(albedo, totalDiffuse), totalSpecular));
-		return Mathf.add(lights, scene.getAmbientColor(n));
+		return Mathf.addColors(lights, scene.getAmbientColor(n));
 	}
 	
 	public static float calculateShadow(Vec3 p, Vec3 lv, float ld, Light light, Scene scene, Raymarcher raymarcher) {
@@ -54,7 +55,7 @@ public class Lighting {
 			for(int i = 0; i < raymarcher.stepsPerShadow; i++) {
 				float h = scene.getClosest(ray.getPoint(t)).dist;
 				res = Math.min(res, light.shadowHardness*h/t);
-				t += Mathf.clamp(h, 0.02f, 0.5f);
+				t  += Mathf.clamp(h, 0.02f, 0.5f);
 				if(h < 0.001f || t > ld) break;
 			}
 			return Mathf.clamp01(res);
@@ -66,6 +67,11 @@ public class Lighting {
 		default:
 			return 1f;
 		}
+	}
+	
+	public static Color calculateReflections(Vec3 p, Vec3 r, RayHit hit, Scene scene, int bounces) {
+		Ray ray = new Ray(Vec3.add(p, Vec3.mul(r, hit.raymarcher.minimumDistance)), r);
+		return hit.raymarcher.getRayColor(ray, scene, bounces + 1);
 	}
 	
 }

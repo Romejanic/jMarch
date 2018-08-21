@@ -34,7 +34,7 @@ public class SceneRenderer {
 				dir.set(u, v, 1f);
 				Vec3.normalize(dir, dir);
 				
-				Color c = raymarcher.getRayColor(new Ray(ori, dir), scene);
+				Color c = raymarcher.getRayColor(new Ray(ori, dir), scene, 0);
 				raymarcher.setBufferColor(x, y, c.getRGB());
 			}
 		}

@@ -20,6 +20,7 @@ public class Raymarcher {
 	public float distanceBias     = 0.85f;
 	public int stepsPerRaymarch   = 512;
 	public int stepsPerShadow     = 128;
+	public int maxBounces         = 24;
 
 	public Raymarcher(int width, int height) {
 		this.resize(width, height);
@@ -82,12 +83,12 @@ public class Raymarcher {
 		return new RayHit(ray, this, t, id);
 	}
 	
-	public Color getRayColor(Ray ray, Scene scene) {
+	public Color getRayColor(Ray ray, Scene scene, int bounce) {
 		RayHit hit = marchRay(ray, scene);
-		if(hit.materialID != -1) {
+		if(hit.materialID != -1 && bounce < this.maxBounces) {
 			ISceneObject object = scene.getObject(hit.materialID);
 			if(object != null) {
-				return object.shadePixel(hit, scene);
+				return object.shadePixel(hit, scene, bounce);
 			}
 		}
 		return getClearColor();

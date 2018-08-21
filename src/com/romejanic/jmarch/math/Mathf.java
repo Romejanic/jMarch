@@ -32,10 +32,25 @@ public class Mathf {
 		return min + (max - min) * random();
 	}
 	
-	public static Color add(Color a, Color b) {
+	public static float mix(float a, float b, float x) {
+		return mixUnclamped(a, b, clamp01(x));
+	}
+	
+	public static float mixUnclamped(float a, float b, float x) {
+		return (1f - x) * a + x * b;
+	}
+	
+	public static Color addColors(Color a, Color b) {
 		int rr = Math.min(a.getRed() + b.getRed(), 255);
 		int gg = Math.min(a.getGreen() + b.getGreen(), 255);
 		int bb = Math.min(a.getBlue() + b.getBlue(), 255);
+		return new Color(rr, gg, bb);
+	}
+	
+	public static Color mixColors(Color a, Color b, float x) {
+		float rr = mix((float)a.getRed() / 255f, (float)b.getRed() / 255f, x);
+		float gg = mix((float)a.getGreen() / 255f, (float)b.getGreen() / 255f, x);
+		float bb = mix((float)a.getBlue() / 255f, (float)b.getBlue() / 255f, x);
 		return new Color(rr, gg, bb);
 	}
 	
