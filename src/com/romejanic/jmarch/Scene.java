@@ -1,5 +1,6 @@
 package com.romejanic.jmarch;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,6 +12,8 @@ public class Scene {
 	
 	private static final ArrayList<ISceneObject> objects = new ArrayList<ISceneObject>();
 	private static final ArrayList<Light> lights = new ArrayList<Light>();
+	
+	public Color ambientColor = new Color(0.1f, 0.1f, 0.2f);
 	
 	public ISceneObject addObject(ISceneObject object) {
 		if(!objects.contains(object)) {
@@ -78,6 +81,10 @@ public class Scene {
 	
 	private Vec3 offset(Vec3 v, float x, float y, float z) {
 		return Vec3.add(v, new Vec3(x, y, z));
+	}
+	
+	public Color getAmbientColor(Vec3 direction) {
+		return this.ambientColor;
 	}
 	
 	public class Distance {

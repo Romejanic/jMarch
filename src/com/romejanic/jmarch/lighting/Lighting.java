@@ -37,7 +37,8 @@ public class Lighting {
 			Vec3.add(totalSpecular, Vec3.mul(col, spec), totalSpecular);
 		}
 		
-		return Vec3.toColor(Vec3.add(Vec3.mul(albedo, totalDiffuse), totalSpecular));
+		Color lights = Vec3.toColor(Vec3.add(Vec3.mul(albedo, totalDiffuse), totalSpecular));
+		return Mathf.add(lights, scene.getAmbientColor(n));
 	}
 	
 	public static float calculateShadow(Vec3 p, Vec3 lv, float ld, Light light, Scene scene, Raymarcher raymarcher) {

@@ -1,5 +1,7 @@
 package com.romejanic.jmarch.math;
 
+import java.awt.Color;
+
 public class Mathf {
 
 	public static float sin(float x) {
@@ -28,6 +30,13 @@ public class Mathf {
 	
 	public static float random(float min, float max) {
 		return min + (max - min) * random();
+	}
+	
+	public static Color add(Color a, Color b) {
+		int rr = Math.min(a.getRed() + b.getRed(), 255);
+		int gg = Math.min(a.getGreen() + b.getGreen(), 255);
+		int bb = Math.min(a.getBlue() + b.getBlue(), 255);
+		return new Color(rr, gg, bb);
 	}
 	
 }
