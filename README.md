@@ -26,3 +26,22 @@ The algorithms implemented in this library are based heavily on the work of Inig
 - Global illumination.
 - Spotlights.
 - More primitives.
+
+# Example
+### Drawing a sphere
+```java
+// make a 640x480 framebuffer with 2x antialiasing
+Raymarcher raymarcher = new Raymarcher(640, 480, 2);
+// set the clear color to a sky blue
+raymarcher.setClearColor(new Color(0.4f, 0.6f, 0.9f));
+// create a new scene
+Scene scene = new Scene();
+
+// add a sphere at (0,0,0) with radius 1
+scene.addObject(new Sphere(new Vec3(0f, 0f, 0f), 1f));
+
+// render the scene into the framebuffer
+SceneRenderer.renderScene(scene, raymarcher);
+// save the result to a PNG file
+SceneRenderer.savePNGToFile(raymarcher, new File("render.png"));
+```
