@@ -123,7 +123,8 @@ public class Raymarcher {
 		if(hit.materialID != -1 && bounce < this.maxBounces) {
 			ISceneObject object = scene.getObject(hit.materialID);
 			if(object != null) {
-				return object.shadePixel(hit, scene, bounce);
+				Color color = object.shadePixel(hit, scene, bounce);
+				return color != null ? color : Color.pink;
 			}
 		}
 		return getClearColor();
