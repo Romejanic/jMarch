@@ -82,6 +82,9 @@ public class SceneRenderer {
 		for(int n = 0; n < nFrames; n++) {
 			Debug.println("* Starting frame " + n + " of " + nFrames + "...");
 			SceneRenderer.globalTime = time;
+			if(onPrepareFrame != null) {
+				onPrepareFrame.run();
+			}
 			
 			renderScene(scene, raymarcher);
 			savePNGToFile(raymarcher, new File(directory, prefix + "_" + n + ".png"));
