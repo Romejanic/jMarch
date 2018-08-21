@@ -20,6 +20,7 @@ public class MarcherTest {
 		raymarcher.setClearColor(new Color(0.4f, 0.6f, 0.9f, 1f));
 		
 		Scene scene = new Scene();
+		scene.addObject(new Plane(Vec3.UP, 10f));
 		for(int i = 0; i < 10; i++) {
 			float theta = ((float)i / 10f) * 2f * (float)Math.PI;
 			float x     = Mathf.cos(theta) * 4f;
@@ -57,6 +58,33 @@ public class MarcherTest {
 			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
 			
 			Vec3 albedo = new Vec3(1f, 0.2f, 0.2f);
+			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene);
+		}
+		
+	}
+	
+	private static class Plane implements ISceneObject {
+
+		private Vec3 normal;
+		private float offset;
+		
+		public Plane(Vec3 normal, float offset) {
+			this.normal = normal;
+			this.offset = offset;
+		}
+		
+		@Override
+		public float getDistance(Vec3 p) {
+			return Vec3.dot(p, this.normal) + this.offset;
+		}
+
+		@Override
+		public Color shadePixel(RayHit hit, Scene scene) {
+			Vec3 p = hit.getHitPosition();
+			Vec3 n = scene.calcSurfaceNormal(p, hit);
+			Vec3 r = Vec3.normalize(Vec3.reflect(hit.ray.direction, n));
+			
+			Vec3 albedo = new Vec3(0.2f, 1f, 0.2f);
 			return Lighting.calculateLighting(albedo, p, n, r, hit.ray, scene);
 		}
 		
