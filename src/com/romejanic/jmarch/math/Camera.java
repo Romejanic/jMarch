@@ -23,12 +23,11 @@ public class Camera {
 		float ry = Mathf.rad(this.rotation.y);
 		float rz = Mathf.rad(this.rotation.z);
 		
-		Mat3 mat = new Mat3();
-		Mat3.rotate(rx, 1f, 0f, 0f, mat);
-		Mat3.mul(mat, Mat3.rotate(ry, 0f, 1f, 0f), mat);
-		Mat3.mul(mat, Mat3.rotate(rz, 0f, 0f, 1f), mat);
+		Mat3 rotX = Mat3.rotate(rx, 1f, 0f, 0f);
+		Mat3 rotY = Mat3.rotate(ry, 0f, 1f, 0f);
+		Mat3 rotZ = Mat3.rotate(rz, 0f, 0f, 1f);
 		
-		return mat;
+		return Mat3.mul(rotZ, Mat3.mul(rotY, rotX));
 	}
 	
 }

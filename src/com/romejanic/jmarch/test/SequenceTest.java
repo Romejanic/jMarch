@@ -23,6 +23,7 @@ public class SequenceTest {
 	public static void main(String[] args) throws Exception {
 		Raymarcher raymarcher = new Raymarcher(320, 200);
 		Scene scene = new Scene();
+		Camera camera = new Camera(0f, 0f, -3f);
 		
 		scene.addObject(new Floor(Vec3.UP, 5f).setMaterial(new PhongMaterial(Color.green)));
 		
@@ -53,16 +54,16 @@ public class SequenceTest {
 					
 					spheres[i].position.set(x, y, 10f);
 				}
+				
+				camera.rotation.y = Mathf.deg(offset);
 			}
 		};
-		
-		Camera camera = new Camera(0f, 0f, -3f);
 		
 		Debug.ENABLED = true;
 		if(FILE_SEQUENCE) {
 			SceneRenderer.renderFileSequencePNG(raymarcher, camera, scene, new File("render/sequence"), "test", 1f, 24, updateLoop);
 		} else {
-			SceneRenderer.renderSequenceGif(raymarcher, camera, scene, new File("render/sequence.gif"), true, 1f, 24, updateLoop);
+			SceneRenderer.renderSequenceGif(raymarcher, camera, scene, new File("render/sequence_1.gif"), true, 1f, 24, updateLoop);
 		}
 	}
 	

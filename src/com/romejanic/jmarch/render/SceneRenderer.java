@@ -89,7 +89,7 @@ public class SceneRenderer {
 
 		for(int n = 1; n <= nFrames; n++) {
 			if(Debug.ENABLED) {
-				float prog = Mathf.clamp01((float)n/(float)nFrames);
+				float prog = Mathf.clamp01((float)n/(float)nFrames) * 100f;
 				Debug.println("* Starting frame " + n + " of " + nFrames + " (" + String.format("%.2f", prog) + "%)...");
 			}
 			SceneRenderer.globalTime = time;
@@ -112,8 +112,11 @@ public class SceneRenderer {
 		float delta = 1f / (float)framesPerSecond;
 		int nFrames = (int)(duration * (float)framesPerSecond);
 
-		for(int n = 0; n < nFrames; n++) {
-			Debug.println("* Starting frame " + n + " of " + nFrames + "...");
+		for(int n = 1; n <= nFrames; n++) {
+			if(Debug.ENABLED) {
+				float prog = Mathf.clamp01((float)n/(float)nFrames) * 100f;
+				Debug.println("* Starting frame " + n + " of " + nFrames + " (" + String.format("%.2f", prog) + "%)...");
+			}
 			SceneRenderer.globalTime = time;
 			if(onPrepareFrame != null) {
 				onPrepareFrame.run();
