@@ -4,6 +4,17 @@ import java.awt.Color;
 
 public class Mathf {
 
+	private static final float DEG_2_RAD = (float)Math.PI / 180f;
+	private static final float RAD_2_DEG = 180f / (float)Math.PI;
+	
+	public static float rad(float deg) {
+		return deg * DEG_2_RAD;
+	}
+	
+	public static float deg(float rad) {
+		return rad * RAD_2_DEG;
+	}
+	
 	public static float sin(float x) {
 		return (float)Math.sin((double)x);
 	}

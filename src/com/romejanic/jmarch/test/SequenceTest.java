@@ -9,6 +9,7 @@ import com.romejanic.jmarch.debug.Debug;
 import com.romejanic.jmarch.lighting.DirectionalLight;
 import com.romejanic.jmarch.lighting.PointLight;
 import com.romejanic.jmarch.lighting.materials.PhongMaterial;
+import com.romejanic.jmarch.math.Camera;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.Vec3;
 import com.romejanic.jmarch.primitives.Floor;
@@ -55,11 +56,13 @@ public class SequenceTest {
 			}
 		};
 		
+		Camera camera = new Camera(0f, 0f, -3f);
+		
 		Debug.ENABLED = true;
 		if(FILE_SEQUENCE) {
-			SceneRenderer.renderFileSequencePNG(raymarcher, scene, new File("render/sequence"), "test", 1f, 24, updateLoop);
+			SceneRenderer.renderFileSequencePNG(raymarcher, camera, scene, new File("render/sequence"), "test", 1f, 24, updateLoop);
 		} else {
-			SceneRenderer.renderSequenceGif(raymarcher, scene, new File("render/sequence.gif"), true, 1f, 24, updateLoop);
+			SceneRenderer.renderSequenceGif(raymarcher, camera, scene, new File("render/sequence.gif"), true, 1f, 24, updateLoop);
 		}
 	}
 	

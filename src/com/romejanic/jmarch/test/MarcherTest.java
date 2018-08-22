@@ -8,6 +8,7 @@ import com.romejanic.jmarch.Scene;
 import com.romejanic.jmarch.lighting.DirectionalLight;
 import com.romejanic.jmarch.lighting.PointLight;
 import com.romejanic.jmarch.lighting.materials.PhongMaterial;
+import com.romejanic.jmarch.math.Camera;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.Vec3;
 import com.romejanic.jmarch.primitives.Floor;
@@ -37,7 +38,9 @@ public class MarcherTest {
 		PointLight pl = (PointLight)scene.addLight(new PointLight(new Vec3(0f, 0f, 10f), 30f));
 		pl.color = Color.green;
 		
-		SceneRenderer.renderScene(scene, raymarcher);
+		Camera camera = new Camera(0f, 0f, -3f);
+		
+		SceneRenderer.renderScene(scene, camera, raymarcher);
 		SceneRenderer.savePNGToFile(raymarcher, new File("render/marchertest.png"));
 	}
 	

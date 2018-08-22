@@ -11,10 +11,11 @@ import javax.swing.JPanel;
 import com.romejanic.jmarch.Raymarcher;
 import com.romejanic.jmarch.Scene;
 import com.romejanic.jmarch.lighting.PointLight;
+import com.romejanic.jmarch.lighting.ShadowType;
 import com.romejanic.jmarch.lighting.materials.PhongMaterial;
+import com.romejanic.jmarch.math.Camera;
 import com.romejanic.jmarch.math.Mathf;
 import com.romejanic.jmarch.math.Vec3;
-import com.romejanic.jmarch.primitives.Floor;
 import com.romejanic.jmarch.primitives.Sphere;
 import com.romejanic.jmarch.render.SceneRenderer;
 
@@ -24,6 +25,7 @@ public class RealtimeTest extends JFrame {
 
 	private Raymarcher raymarcher = new Raymarcher(320, 240);
 	private Scene scene = new Scene();
+	private Camera camera = new Camera(0f, 0f, -3f);
 	
 	public RealtimeTest() {
 		super("Raymarcher Test");
@@ -41,7 +43,7 @@ public class RealtimeTest extends JFrame {
 	
 	@Override
 	public void paint(Graphics g) {
-		SceneRenderer.renderScene(this.scene, this.raymarcher);
+		SceneRenderer.renderScene(this.scene, this.camera, this.raymarcher);
 		super.paint(g);
 	}
 	
@@ -66,7 +68,8 @@ public class RealtimeTest extends JFrame {
 			spheres[i] = (Sphere)frame.scene.addObject(sphere);
 		}
 		//frame.scene.addObject(new Floor(Vec3.UP, 1f).setMaterial(new PhongMaterial(Color.green)));
-		frame.scene.addLight(new PointLight(new Vec3(0f, 0f, -3f)));
+		PointLight light = (PointLight)frame.scene.addLight(new PointLight(new Vec3(0f, 0f, -3f)));
+		light.shadowType = ShadowType.HARD;
 		
 		float t = 0f;
 		long  l = System.currentTimeMillis();
@@ -76,14 +79,16 @@ public class RealtimeTest extends JFrame {
 			l = time;
 			t += dlt;
 			
-			float offset = 2f * (float)Math.PI * t;
-			for(int i = 0; i < spheres.length; i++) {
-				float theta = ((float)i*gap) * 2f * (float)Math.PI;
-				float x     = Mathf.cos(theta + offset) * 4f;
-				float z     = Mathf.sin(theta + offset) * 4f;
-				
-				spheres[i].position.set(x, 0f, z);
-			}
+			frame.camera.rotation.y = 360f * t;
+			
+//			float offset = 2f * (float)Math.PI * t;
+//			for(int i = 0; i < spheres.length; i++) {
+//				float theta = ((float)i*gap) * 2f * (float)Math.PI;
+//				float x     = Mathf.cos(theta + offset) * 4f;
+//				float z     = Mathf.sin(theta + offset) * 4f;
+//				
+//				spheres[i].position.set(x, 0f, z);
+//			}
 			
 			frame.repaint();
 		}
