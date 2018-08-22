@@ -123,6 +123,9 @@ public class SceneRenderer {
 	}
 	
 	public static void savePNGToFile(Raymarcher raymarcher, File file) throws IOException {
+		if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+			throw new IOException("Failed to create parent directory: " + file.getParent());
+		}
 		if((!file.exists() && !file.createNewFile()) || file.isDirectory()) {
 			throw new IllegalArgumentException("Given file cannot be a directory, or could not be created!");
 		}
