@@ -78,4 +78,15 @@ public class Mathf {
 		return new Color(c, c, c);
 	}
 	
+	public static Mat3 rotateXYZ(float x, float y, float z) {
+		return rotateXYZ(x, y, z, new Mat3());
+	}
+	
+	public static Mat3 rotateXYZ(float x, float y, float z, Mat3 dest) {
+		Mat3 rotX = Mat3.rotate(x, 1f, 0f, 0f);
+		Mat3 rotY = Mat3.rotate(y, 0f, 1f, 0f);
+		Mat3 rotZ = Mat3.rotate(z, 0f, 0f, 1f);
+		return Mat3.mul(rotZ, Mat3.mul(rotY, rotX, dest), dest);
+	}
+	
 }
